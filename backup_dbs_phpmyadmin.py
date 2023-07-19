@@ -1,5 +1,6 @@
 # Libs
 import os
+from datetime import date
 import requests as r
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
@@ -9,15 +10,14 @@ load_dotenv()
 # Inicio de sesión
 s = r.Session()
 loginData = {'pma_username': os.getenv('PMA_USER'), 'pma_password': os.getenv('PMA_PASS'), 'target': 'index.php', 'server': '1'}
-res1 = s.post(os.getenv('DOMAIN') + "/index.php", data = loginData)
+res1 = s.post(os.getenv('DOMAIN') + '/index.php', data = loginData)
 
-# Resultados del login
+# Resultados del login (HTML)
 loginResContent = res1.text
 
 # Extraer el token del login
 soup = BeautifulSoup(loginResContent, 'html.parser')
-element = soup.find('input', { 'name' : 'token' })
-token = element.get('value')
+token = soup.find('input', { 'name' : 'token' }).get('value')
 
 # Exportar data
 exportData = {
@@ -99,12 +99,15 @@ exportData = {
   'latex_columns': 'something',
   'latex_data_caption': 'Contenido de la tabla @TABLE@',
   'latex_data_continued_caption': 'Contenido de la tabla @TABLE@ (continúa)',
-  'latex_data_label': 'tab:@TABLE@-data',
-  # 'latex_null': '\textit{NULL}',
+  'latex_data_label': 'tab:@TABLE@-data'
 }
-res2 = s.post(os.getenv('DOMAIN') + "/export.php", data = exportData)
+res2 = s.post(os.getenv('DOMAIN') + '/export.php', data = exportData)
 
-print("CODE: ", res2.status_code)
+# Crear el directorio si no existe
+if not os.path.exists(os.getenv('FILES')):
+    os.makedirs(os.getenv('FILES'))
 
-with open('file.sql', 'wb') as file:
+# Guardar archivo de sql
+with open(os.getenv('FILES') + 'db_backup_' + str(date.today()) + '.sql', 'wb') as file:
   file.write(res2.content)
+  
