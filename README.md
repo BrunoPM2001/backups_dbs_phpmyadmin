@@ -17,4 +17,4 @@ TABLES="table1,table2,table3"
 
 # How it work
 
-First, an HTTP request to login into the server (for get a token and cookies), after that it does another HTTP request to export the tables that you want (it generate an sql file).
+First, it makes an HTTP request to login into the server (for get a token and cookies), after that it does another HTTP request to export the tables that you want (it generate an sql file).
