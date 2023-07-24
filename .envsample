@@ -4,4 +4,9 @@ PMA_PASS=""
 
 # Domain
 DOMAIN=""
+
+# Folder or dir to save the downloads
 FILES=""
+
+# Tables to export (separate using ',')
+TABLES=""
