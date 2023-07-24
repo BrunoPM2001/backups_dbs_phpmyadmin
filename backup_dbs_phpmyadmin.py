@@ -29,9 +29,9 @@ exportData = {
   'quicl_or_custom': 'quick',
   'what': 'sql',
   'structure_or_data_forced': '0',
-  'table_select[]': 'users_idiomas',
-  'table_structure[]': 'users_idiomas',
-  'table_data[]': 'users_idiomas',
+  'table_select[]': os.getenv('TABLES').split(','),
+  'table_structure[]': os.getenv('TABLES').split(','),
+  'table_data[]': os.getenv('TABLES').split(','),
   'output_format': 'sendit',
   'filename_template': '@DATABASE@',
   'remember_template': 'on',
@@ -110,4 +110,3 @@ if not os.path.exists(os.getenv('FILES')):
 # Guardar archivo de sql
 with open(os.getenv('FILES') + 'db_backup_' + str(date.today()) + '.sql', 'wb') as file:
   file.write(res2.content)
-  
